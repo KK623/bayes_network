@@ -99,6 +99,8 @@ $$
 ==$j=1,2,\cdots,N_r$==
 
 其中每个分量计算：
+
+
 $$
 \alpha^{(l)}_{i\rightarrow j}(s_k)=\ln\frac{p^{(l)}(x_i=s_k)}{p^{(l)}(x_i=s_0)}，k=1,2,\cdots,\sqrt{Q}-1
 $$
@@ -109,16 +111,22 @@ $$
 #### ON端
 
 计算后验的LLR:
+
+
 $$
 \mathbf{\beta}^{(l)}_{y_j\rightarrow x_i}=\{\beta^{(l)}_{j,i}(s_1),\beta^{(l)}_{j,i}(s_2),\cdots,\beta^{(l)}_{j,i}(s_{\sqrt{Q}-1})\}
 $$
 这是第$j$个ON向第$i$个SN传递的信息
 
 其中第$k$个元素计算如下：
+
+
 $$
 \beta^{(l)}_{j,i}(s_k)=\ln\frac{p^{(l)}(x_i=s_k|y_j,\mathbf{H})}{p^{(l)}(x_i=s_0|y_j,\mathbf{H})},k=1,2,\cdots,\sqrt{Q}-1
 $$
 利用贝叶斯定理，得
+
+
 $$
 \begin{equation}
 \begin{aligned}
