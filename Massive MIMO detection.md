@@ -131,9 +131,12 @@ $$
 \begin{equation}
 \begin{aligned}
 \beta^{(l)}_{j,i}(s_k)&=\ln\frac{p^{(l)}(x_i=s_k|y_j,\mathbf{H})}{p^{(l)}(x_i=s_0|y_j,\mathbf{H})}\\
-&=\ln\frac{p^{(l)}(x_i=s_k,y_j|\mathbf{H})/p^{(l)}(y_j|\mathbf{H})}{p^{(l)}(x_i=s_0,y_j|\mathbf{H})/p^{(l)}(y_j|\mathbf{H})}\\
-&=\ln\frac{p^{(l)}(y_j|x_i=s_k,\mathbf{H})\cdot p^{(l)}(x_i=s_k|\mathbf{H})}{p^{(l)}(y_j|x_i=s_0,\mathbf{H})\cdot p^{(l)}(x_i=s_0|\mathbf{H})}\\
-&=\ln\frac{p^{(l)}(y_j|x_i=s_k,\mathbf{H})\cdot \sum\limits_{\mathbf{X}}  }{}
+%%&=\ln\frac{p^{(l)}(x_i=s_k,y_j|\mathbf{H})/p^{(l)}(y_j|\mathbf{H})}{p^{(l)}(x_i=s_0,y_j|\mathbf{H})/p^{(l)}(y_j|\mathbf{H})}\\
+%%&=\ln\frac{p^{(l)}(y_j|x_i=s_k,\mathbf{H})\cdot p^{(l)}(x_i=s_k|\mathbf{H})}{p^{(l)}(y_j|x_i=s_0,\mathbf{H})\cdot p^{(l)}(x_i=s_0|\mathbf{H})}\\
+%%&=\ln\frac{p^{(l)}(y_j|x_i=s_k,\mathbf{H})\cdot \sum\limits_{\mathbf{X}}  }{}
+&=\ln\frac{\sum_{\mathbf{X:}x_i=s_k}p^{(l)}(\mathbf{x}|y_j,\mathbf{H})}{\sum_{\mathbf{X:}x_i=s_0}p^{(l)}(\mathbf{x}|y_j,\mathbf{H})} , 这是联合概率与边缘概率推导\\  
+&=\ln\frac{\sum\limits_{\mathbf{X:}x_i=s_k}p^{(l)}(y_j|\mathbf{x,H})p^{(l)}(\mathbf{x}|\mathbf{H})/p^{(l)}(y_j|\mathbf{H})}{\sum\limits_{\mathbf{X:}x_i=s_0}p^{(l)}(y_j|\mathbf{x,H})p^{(l)}(\mathbf{x}|\mathbf{H})/p^{(l)}(y_j|\mathbf{H})}，这是贝叶斯公式\\
 \end{aligned}
 \end{equation}
 $$
+
