@@ -65,7 +65,7 @@ p(x_i|H,y)&=\sum_{\mathbf{x}\backslash x_i} p(x_1,x_2,\cdots,x_{N_t}|H,y)\\
 \\
 $$
 
-> 上式是联合概率推导边缘概率公式而来的
+> ==上式是联合概率推导边缘概率公式而来的==
 
 从symbol nodes(SN)到observation nodes(ON)传递的是先验概率
 
@@ -116,5 +116,16 @@ $$
 
 其中第$k$个元素计算如下：
 $$
-
+\beta^{(l)}_{j,i}(s_k)=\ln\frac{p^{(l)}(x_i=s_k|y_j,\mathbf{H})}{p^{(l)}(x_i=s_0|y_j,\mathbf{H})},k=1,2,\cdots,\sqrt{Q}-1
+$$
+利用贝叶斯定理，得
+$$
+\begin{equation}
+\begin{aligned}
+\beta^{(l)}_{j,i}(s_k)&=\ln\frac{p^{(l)}(x_i=s_k|y_j,\mathbf{H})}{p^{(l)}(x_i=s_0|y_j,\mathbf{H})}\\
+&=\ln\frac{p^{(l)}(x_i=s_k,y_j|\mathbf{H})/p^{(l)}(y_j|\mathbf{H})}{p^{(l)}(x_i=s_0,y_j|\mathbf{H})/p^{(l)}(y_j|\mathbf{H})}\\
+&=\ln\frac{p^{(l)}(y_j|x_i=s_k,\mathbf{H})\cdot p^{(l)}(x_i=s_k|\mathbf{H})}{p^{(l)}(y_j|x_i=s_0,\mathbf{H})\cdot p^{(l)}(x_i=s_0|\mathbf{H})}\\
+&=\ln\frac{p^{(l)}(y_j|x_i=s_k,\mathbf{H})\cdot \sum\limits_{\mathbf{X}}  }{}
+\end{aligned}
+\end{equation}
 $$
