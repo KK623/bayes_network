@@ -30,7 +30,7 @@
 
 ### 最大后验假设问题
 
-> $\mathbf{h}^{*}=\mathop{\arg}\max\limits_{\theta}P(H=h|E=e)$，MAP问题
+> $\mathbf{h}^{*}=\mathop{\arg}\max\limits_{\theta}P(H=h|E=e)$ ，MAP问题
 
 ### 最大可能解释问题
 
