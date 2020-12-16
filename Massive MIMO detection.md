@@ -90,7 +90,7 @@ $$
 
 计算先验概率的LLR：
 $$
-\mathbf{\alpha}^{(l)}_{s_i\rightarrow y_j}=\{\alpha^{(l)}_{i\rightarrow j}(s_1),\alpha^{(l)}_{i\rightarrow j}(s_2),\cdots,\alpha^{(l)}_{i\rightarrow j}(s_{\sqrt{Q}-1})\}
+\mathbf{\alpha}^{(l)}_{s_i\rightarrow y_j}=\{\alpha^{(l)}_{i,j}(s_1),\alpha^{(l)}_{i,j}(s_2),\cdots,\alpha^{(l)}_{i,j}(s_{\sqrt{Q}-1})\}
 $$
 这是从第$i$个SN到第$j$个ON传递的信息, 
 
@@ -100,7 +100,21 @@ $$
 
 其中每个分量计算：
 $$
-\alpha^{(l)}_{i\rightarrow j}(s_k)=\ln\frac{p^{(l)}(x_i=s_k)}{p^{(l)}(x_i=s_0)}
+\alpha^{(l)}_{i\rightarrow j}(s_k)=\ln\frac{p^{(l)}(x_i=s_k)}{p^{(l)}(x_i=s_0)}，k=1,2,\cdots,\sqrt{Q}-1
 $$
 也就是对于对于第$i$个SN(用户)，它发射的这个symbol等于$s_k$的LLR，因此每个i，有$\sqrt{Q}-1$个LLR，作为LLR向量进行传递
 
+
+
+#### ON端
+
+计算后验的LLR:
+$$
+\mathbf{\beta}^{(l)}_{y_j\rightarrow x_i}=\{\beta^{(l)}_{j,i}(s_1),\beta^{(l)}_{j,i}(s_2),\cdots,\beta^{(l)}_{j,i}(s_{\sqrt{Q}-1})\}
+$$
+这是第$j$个ON向第$i$个SN传递的信息
+
+其中第$k$个元素计算如下：
+$$
+
+$$
