@@ -126,6 +126,11 @@ $$
 $$
 利用贝叶斯定理，得
 
+==有可能是并不是计算完整的后验概率，等待学习sum-product论文== 、
+
+
+
+下面的推导仅供参考
 
 $$
 \begin{equation}
@@ -136,7 +141,68 @@ $$
 %%&=\ln\frac{p^{(l)}(y_j|x_i=s_k,\mathbf{H})\cdot \sum\limits_{\mathbf{X}}  }{}
 &=\ln\frac{\sum_{\mathbf{X:}x_i=s_k}p^{(l)}(\mathbf{x}|y_j,\mathbf{H})}{\sum_{\mathbf{X:}x_i=s_0}p^{(l)}(\mathbf{x}|y_j,\mathbf{H})} , 这是联合概率与边缘概率推导\\  
 &=\ln\frac{\sum\limits_{\mathbf{X:}x_i=s_k}p^{(l)}(y_j|\mathbf{x,H})p^{(l)}(\mathbf{x}|\mathbf{H})/p^{(l)}(y_j|\mathbf{H})}{\sum\limits_{\mathbf{X:}x_i=s_0}p^{(l)}(y_j|\mathbf{x,H})p^{(l)}(\mathbf{x}|\mathbf{H})/p^{(l)}(y_j|\mathbf{H})}，这是贝叶斯公式\\
+&=\ln\frac{\sum\limits_{\mathbf{X:}x_i=s_k}p^{(l)}(y_j|\mathbf{x,H})p^{(l)}(\mathbf{x})}{\sum\limits_{\mathbf{X:}x_i=s_0}p^{(l)}(y_j|\mathbf{x,H})p^{(l)}(\mathbf{x})}
 \end{aligned}
 \end{equation}
 $$
+
+ 
+
+**实际上：**
+$$
+\begin{equation}
+\begin{aligned}
+\beta^{(l)}_{j,i}(s_k)&=\ln\frac{p^{(l)}(x_i=s_k|y_j,\mathbf{H})}{p^{(l)}(x_i=s_0|y_j,\mathbf{H})}\\
+&=\ln\frac{\sum\limits_{\mathbf{X:}x_i=s_k}p^{(l)}(y_j|\mathbf{x,H})p^{(l)}(\mathbf{x}^{2N_t\backslash i})}{\sum\limits_{\mathbf{X:}x_i=s_0}p^{(l)}(y_j|\mathbf{x,H})p^{(l)}(\mathbf{x}^{2N_t\backslash i})}\\
+&=\ln\frac{\sum\limits_{\mathbf{X:}x_i=s_k}p^{(l)}(y_j|\mathbf{x,H})\prod\limits_{1,t\neq i}^{N_t}p(x_t=s_m)}
+{\sum\limits_{\mathbf{X:}x_i=s_0}p^{(l)}(y_j|\mathbf{x,H})\prod\limits_{1,t\neq i}^{N_t}p(x_t=s_m)}，这一步有近似：x_i间相互独立。 注：\prod指的是给定x_i=s_k时，各个x_{i'}的取值情况\\
+&=\ln\frac{\sum\limits_{\mathbf{X:}x_i=s_k}p^{(l)}(y_j|\mathbf{x,H})\prod\limits_{1,t\neq i}^{N_t}p^{(l)}(x_t=s_0)\exp \alpha_{t,j}^{(l-1)}(s_m)}{\sum\limits_{\mathbf{X:}x_i=s_0}p^{(l)}(y_j|\mathbf{x,H})\prod\limits_{1,t\neq i}^{N_t}p^{(l)}(x_t=s_0)\exp \alpha_{t,j}^{(l-1)}(s_m)}\\
+&=\ln\frac{\sum\limits_{\mathbf{X:}x_i=s_k}p^{(l)}(y_j|\mathbf{x,H})\exp\sum\limits_{1,t\neq i}^{N_t}\alpha_{t,j}^{(l-1)}(s_m)}{\sum\limits_{\mathbf{X:}x_i=s_0}p^{(l)}(y_j|\mathbf{x,H})\exp\sum\limits_{1,t\neq i}^{N_t}\alpha_{t,j}^{(l-1)}(s_m)}\\
+\end{aligned}
+\end{equation}
+$$
+下面计算似然$p^{(l)}(y_j|\mathbf{x,H})$:，其实==这里也假设了接收端是独立的==
+$$
+\begin{equation}
+\begin{aligned}
+y_j&=h_{j,i}x_i+\sum\limits_{k=1,k\neq i}^{2N_t}h_{j,k}x_k+n_j\\
+&=h_{j,i}x_i+z_{j,i}+n_j\\
+\end{aligned}
+\end{equation}
+$$
+如果使用Gaussian approximation(==GAI==)，有：
+$$
+\begin{equation}
+\begin{aligned}
+\mu_{z_{j,i}}&=\sum\limits_{k=1,k\neq i}^{2N_t}h_{j,k}\mathbb{E}\{x_k\},\\
+\sigma^2_{z_{j,i}}&=\sum\limits_{k=1,k\neq i}^{2N_t}h_{j,k}^2{\rm Var}\{x_k\}
+\end{aligned}
+\end{equation}
+$$
+因此，
+$$
+p(y_j|\mathbf{x,H})=\frac{1}{\sqrt{2\pi}\sigma_{z_{j,i}}}\exp\{-\frac{(y_j-h_{j,i}x_i-\mu_{z_{j,i}}-0)^2}{2\sigma^2_{z_{j,i}}}\}
+$$
+将上式带回$\beta$计算式，得
+$$
+\begin{equation}
+\begin{aligned}
+
+\beta_{j,i}^{(l)}(s_k)
+&=\ln \frac{\sum\limits_{\mathbf{X}:x_i=s_k}\exp(-\frac{(y_j-h_{j,i}x_i-\mu_{z_{j,i}}^{(l-1)})^2}{2(\sigma^{(l-1)}_{z_{j,i}})^2})\exp\sum\limits_{1,t\neq i}^{N_t}\alpha_{t,j}^{(l-1)}(s_m)}
+{\sum\limits_{\mathbf{X}:x_i=s_0}\exp(-\frac{(y_j-h_{j,i}x_i-\mu_{z_{j,i}}^{(l-1)})^2}{2(\sigma^{(l-1)}_{z_{j,i}})^2})\exp\sum\limits_{1,t\neq i}^{N_t}\alpha_{t,j}^{(l-1)}(s_m)}\\
+&=\ln \sum\limits_{\mathbf{X}:x_i=s_k}\exp(-\frac{(y_j-h_{j,i}x_i-\mu_{z_{j,i}}^{(l-1)})^2}{2(\sigma^{(l-1)}_{z_{j,i}})^2})\exp\sum\limits_{1,t\neq i}^{N_t}\alpha_{t,j}^{(l-1)}(s_m)
+-\ln{\sum\limits_{\mathbf{X}:x_i=s_0}\exp(-\frac{(y_j-h_{j,i}x_i-\mu_{z_{j,i}}^{(l-1)})^2}{2(\sigma^{(l-1)}_{z_{j,i}})^2})\exp\sum\limits_{1,t\neq i}^{N_t}\alpha_{t,j}^{(l-1)}(s_m)}\\
+&=\max\limits_{\mathbf{X}:x_i=s_k}(\sum\limits_{1,t\neq i}^{N_t}\alpha_{t,j}^{(l-1)}(s_m)-\frac{(y_j-h_{j,i}x_i-\mu_{z_{j,i}}^{(l-1)})^2}{2(\sigma^{(l-1)}_{z_{j,i}})^2})-\max\limits_{\mathbf{X}:x_i=s_0}(\sum\limits_{1,t\neq i}^{N_t}\alpha_{t,j}^{(l-1)}(s_m)-\frac{(y_j-h_{j,i}x_i-\mu_{z_{j,i}}^{(l-1)})^2}{2(\sigma^{(l-1)}_{z_{j,i}})^2}),这一步用了Jacobi近似\\
+&=\frac{(y_j-h_{j,i}s_0-\mu_{z_{j,i}}^{(l-1)})^2}{2(\sigma^{(l-1)}_{z_{j,i}})^2}
+-\frac{(y_j-h_{j,i}s_k-\mu_{z_{j,i}}^{(l-1)})^2}{2(\sigma^{(l-1)}_{z_{j,i}})^2}\\
+&=\frac{h_{j,i}^2(s_0^2-s_k^2)+2h_{j,i}(y_j-\mu_{z_{j,i}}^{(l-1)})(s_k-s_0)}{2(\sigma^{(l-1)}_{z_{j,i}})^2}
+
+
+\end{aligned}
+\end{equation}
+$$
+也就是：
+
+==$\beta_{j,i}^{(l)}(s_k)=\frac{h_{j,i}^2(s_0^2-s_k^2)+2h_{j,i}(y_j-\mu_{z_{j,i}}^{(l-1)})(s_k-s_0)}{2(\sigma^{(l-1)}_{z_{j,i}})^2}$==
 
